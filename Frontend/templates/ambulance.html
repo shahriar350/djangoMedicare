@@ -2,9 +2,9 @@
 {% load crispy_forms_filters %}
 {% block body %}
     <div class="container">
-    <div class="row">
-    <h4 class="col-12">Ambulance order:</h4>
-        {% for order in orders %}
+        <div class="row">
+            <h4 class="col-12">Ambulance order:</h4>
+            {% for order in orders %}
 
                 <div class="col-sm-6 col-lg-4 text-center item mb-4">
                     <span class="tag">Sale</span>
@@ -19,53 +19,57 @@
             {% empty %}
                 <p>No ambulance in order.</p>
             {% endfor %}
-    </div>
+        </div>
         <div class="row">
-            {% if user.is_authenticated and user.staff %}
-                <div class="accordion" id="accordionExample">
-                <div class="card">
-                    <div class="card-header" id="headingOne">
-                        <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
-                                    data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Create a product
-                            </button>
-                        </h2>
-                    </div>
+            {% if user.is_authenticated and user.is_staff %}
+                <div class="col-12">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left" type="button"
+                                            data-toggle="collapse"
+                                            data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Create a product
+                                    </button>
+                                </h2>
+                            </div>
 
-                    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                        <div class="card-body">
-                            <h4 class="card-title px-2">Create a product</h4>
-                            <form class="card-body" method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                {{ form | crispy }}
-                                <button type="submit" class="btn btn-primary">Add a Ambulance</button>
-                            </form>
-                            <div class="mt-3 ">
-                                <h5 class="card-title px-2">Your Ambulances</h5>
-                                <div class="row card-body">
-                                    {% for ambulance in my_ambulances %}
-                                        <div class="col-sm-6 col-lg-4 text-center item mb-4">
-                                            <span class="tag">Sale</span>
-                                            <img class="w-100 shadow rounded" src="{{ ambulance.image.url }}"
-                                                 alt="Image">
-                                            <h3 class="text-dark">{{ ambulance.name | capfirst }}</h3>
-                                            <p class="price">{{ ambulance.contact_number }}</p>
-                                            <p class="price">${{ ambulance.cost }}</p>
-                                            <p class="price">{{ ambulance.details }}</p>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                 data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <h4 class="card-title px-2">Create a product</h4>
+                                    <form class="card-body" method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        {{ form | crispy }}
+                                        <button type="submit" class="btn btn-primary">Add a Ambulance</button>
+                                    </form>
+                                    <div class="mt-3 ">
+                                        <h5 class="card-title px-2">Your Ambulances</h5>
+                                        <div class="row card-body">
+                                            {% for ambulance in my_ambulances %}
+                                                <div class="col-sm-6 col-lg-4 text-center item mb-4">
+                                                    <span class="tag">Sale</span>
+                                                    <img class="w-100 shadow rounded" src="{{ ambulance.image.url }}"
+                                                         alt="Image">
+                                                    <h3 class="text-dark">{{ ambulance.name | capfirst }}</h3>
+                                                    <p class="price">{{ ambulance.contact_number }}</p>
+                                                    <p class="price">${{ ambulance.cost }}</p>
+                                                    <p class="price">{{ ambulance.details }}</p>
+                                                </div>
+                                            {% empty %}
+                                                <p>Sorry no product is available.</p>
+                                            {% endfor %}
+
+
                                         </div>
-                                    {% empty %}
-                                        <p>Sorry no product is available.</p>
-                                    {% endfor %}
-
-
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-
-
             {% endif %}
 
             <div class="mt-3">
@@ -94,6 +98,6 @@
             </div>
 
 
-            </div>
+        </div>
 
 {% endblock %}

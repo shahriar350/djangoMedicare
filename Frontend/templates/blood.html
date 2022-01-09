@@ -17,7 +17,7 @@
                     <th>ID</th>
                     <th>Group</th>
                     <th>User</th>
-                    <th>Phone number</th>
+                    <th>Email</th>
                     <th>Address</th>
                 </tr>
                 </thead>
@@ -26,8 +26,8 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ blood.blood.group }}</td>
-                        <td>{{ blood.user.name }}</td>
-                        <td>{{ blood.user.phone_number }}</td>
+                        <td>{{ blood.user.first_name }}</td>
+                        <td>{{ blood.user.email }}</td>
                         <td>{{ blood.address }}</td>
                     </tr>
                 {% endfor %}

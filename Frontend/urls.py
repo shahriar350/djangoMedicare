@@ -5,7 +5,7 @@ from . import views
 app_name = 'front'
 urlpatterns = [
     path('product/<int:pk>/', views.ProductPage.as_view(), name="product"),
-    path('auth/login/', views.LoginPage.as_view(), name="login"),
+    path('auth/login/', views.login_page, name="login"),
     path('auth/register/', views.RegisterPage.as_view(), name="register"),
     path('add/cart/<int:product_id>/', views.cart_a_product, name="cart_a_product"),
     path('all/cart/', views.AllCartProduct.as_view(), name="user_cart"),

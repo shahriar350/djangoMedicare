@@ -1,11 +1,12 @@
 import datetime
 
-import cv2
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db.models import Sum, F
-from django.http import JsonResponse, HttpResponseRedirect, HttpResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -15,7 +16,7 @@ from django.views.generic import TemplateView, DetailView, ListView, DeleteView,
 from django.views.generic.detail import SingleObjectMixin
 
 from Frontend.forms import UserLoginForm, UserRegisterForm, BloodForm, ProductForm, AmbulanceForm
-from Frontend.models import AdminBanner, Product, Cart, CartProduct, AdminBasicInfo, Order, Users, Blood, BloodGroup, \
+from Frontend.models import AdminBanner, Product, Cart, CartProduct, AdminBasicInfo, Order, Blood, BloodGroup, \
     Ambulance, AmbulanceOrder, Doctor, DoctorAppointment
 
 
@@ -101,30 +102,30 @@ def cart_to_checkout(request):
         return redirect("front:index")
 
 
-class LoginPage(View):
-    def get(self, request):
-        form = UserLoginForm
-        return render(request, 'login.html', {'form': form})
-
-    def post(self, request):
-        number = request.POST.get('phone_number')
-        password = request.POST.get('password')
+def login_page(request):
+    if request.method == 'POST':
         form = UserLoginForm(request.POST)
-        if form.is_valid():
-            user = form.login(request)
-            if user:
-                login(request, user)
-                nextID = request.GET.get('next', None)
-                if nextID is not None:
-                    return HttpResponseRedirect(request.GET.get('next'))
-                else:
-                    return redirect('front:index')
-        return render(request, 'login.html', {'form': form})
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user:
+            login(request, user)
+            nextID = request.GET.get('next', None)
+            if nextID is not None:
+                return HttpResponseRedirect(request.GET.get('next'))
+            else:
+                return redirect('front:index')
+        else:
+            messages.info(request, 'invalid registration details')
+    else:
+        form = UserLoginForm()
+    return render(request,'login.html',{'form':form})
+
 
 
 class RegisterPage(FormView):
     template_name = 'register.html'
-    model = Users
+    model = User
     form_class = UserRegisterForm
     success_url = '/'
 
