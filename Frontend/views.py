@@ -1,7 +1,7 @@
 import datetime
 
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
@@ -72,6 +72,12 @@ class RemoveDoctorAppointment(DeleteView):
         return self.request.META.get('HTTP_REFERER')
 
 
+@login_required(login_url="/auth/login")
+def logout_user(request):
+    logout(request)
+    return redirect("front:index")
+
+
 class AllCartProduct(ListView):
     template_name = "cart.html"
     # model = Cart
@@ -119,8 +125,7 @@ def login_page(request):
             messages.info(request, 'invalid registration details')
     else:
         form = UserLoginForm()
-    return render(request,'login.html',{'form':form})
-
+    return render(request, 'login.html', {'form': form})
 
 
 class RegisterPage(FormView):

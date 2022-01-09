@@ -21,6 +21,7 @@ urlpatterns = [
     path('doctor/tele/', views.TeleDoctor.as_view(), name="tele_doctor"),
     path('doctor/video/tele/', views.VideoDoctor.as_view(), name="tele_doctor_video"),
     path('doctor/remove/appointment/<int:pk>/', views.RemoveDoctorAppointment.as_view(), name="remove_doctor_appointment"),
+    path('logout/', views.logout_user, name="logout"),
     path('', views.Index.as_view(), name='index'),
 
     #     api call
