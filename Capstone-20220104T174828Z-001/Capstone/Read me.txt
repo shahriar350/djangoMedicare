@@ -1,0 +1,12 @@
+blood search -- name, blood group, address, mobile
+amb call -- 
+telemedicine --  
+doctor appoinment -- 
+pharmacy --
+
+
+All pages are in zip file 
+plese keep which pages are need and you can skip 
+unnecessery pages.
+
+Thanks in Advanced. 

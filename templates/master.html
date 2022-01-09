@@ -1,0 +1,192 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Pharma &mdash; </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+
+
+    <link rel="stylesheet" href="{% static 'css/aos.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block head %}
+
+    {% endblock %}
+
+</head>
+
+<body>
+
+<div class="site-wrap">
+
+
+    <div class="site-navbar py-2">
+
+        <div class="container">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="logo">
+                    <div class="site-logo">
+                        <a href="{% url 'front:index' %}">
+                            <span id="logo_text"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="main-nav d-none d-lg-block">
+                    <nav class="site-navigation text-right text-md-center" role="navigation">
+                        <ul class="site-menu js-clone-nav d-none d-lg-block">
+                            {% with request.resolver_match.url_name as url_name %}
+
+                                <li {% if url_name == 'index' %}class="active" {% endif %}><a
+                                        href="{% url 'front:index' %}">Home</a>
+                                </li>
+                                <li {% if url_name == 'blood' %}class="active" {% endif %}><a
+                                        href="{% url 'front:blood' %}">Blood Donation</a></li>
+                                <li {% if url_name == 'product_all' %}class="active" {% endif %}><a
+                                        href="{% url 'front:product_all' %}">Pharmacy</a></li>
+                                <li {% if url_name == 'ambulance' %}class="active" {% endif %}><a
+                                        href="{% url 'front:ambulance' %}">Ambulance</a></li>
+                                <li {% if url_name == 'doctor' %}class="active" {% endif %}><a
+                                        href="{% url 'front:doctor' %}">Doctor Appointment</a></li>
+                                <li {% if url_name == 'tele_doctor' %}class="active" {% endif %}><a
+                                        href="{% url 'front:tele_doctor' %}">Tele Doctor</a></li>
+
+                            {% endwith %}
+                        </ul>
+                    </nav>
+                </div>
+                <div class="icons">
+                    <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
+                    <a href="{% url 'front:user_cart' %}" class="icons-btn d-inline-block bag">
+                        <span class="icon-shopping-bag"></span>
+                        <span class="number" id="count_cart"></span>
+                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'front:user' %}" class="icons-btn d-inline-block bag">
+                            <span class="icon-user"></span>
+                            <span class="number icon-circle text-danger"></span>
+                        </a>
+                    {% else %}
+
+                        <div>
+                            <a href="{% url 'front:login' %}" class="icons-btn d-inline-block bag px-3 py-1 bg-light rounded m-1">
+                                {#                            <span class="icon-user"></span>#}
+                                Login
+                            </a>
+                            <a href="{% url 'front:register' %}" class="icons-btn d-inline-block bag  px-3 py-1 bg-light rounded m-1">
+                                {#                            <span class="icon-user"></span>#}
+                                Register
+                            </a>
+                        </div>
+                    {% endif %}
+
+                    <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none"><span
+                            class="icon-menu"></span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    {% block body %}
+
+    {% endblock %}
+
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+                    <div class="block-7">
+                        <h3 class="footer-heading mb-4">About Us</h3>
+                        <p>Pharma is one stop medical services provider. Online pharmachy, Doctor Appoinment, Ambaulance
+                            Calling and so on.</p>
+                    </div>
+
+                </div>
+                <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Quick Links</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Supplements</a></li>
+                        <li><a href="#">Vitamins</a></li>
+                        <li><a href="#">Diet &amp; Nutrition</a></li>
+                        <li><a href="#">Tea &amp; Coffee</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Contact Info</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">Rupnagar R/A, Dhaka-1216</li>
+                            <li class="phone"><a href="tel://+8801521413133">+8801521413133</a></li>
+                            <li class="email">mailtoshohaib@gmail.com</li>
+                        </ul>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="row pt-5 mt-5 text-center">
+                <div class="col-md-12">
+                    <p>
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script>
+                        All rights reserved | Kazi Shohaib Islam
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/jquery-ui.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/aos.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% block js %}
+
+{% endblock %}
+<script>
+
+    fetch("/api/check/cart/count/", {
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+        },
+    }).then(response => {
+        return response.json() //Convert response to JSON
+    })
+        .then(data => {
+            console.log(data['infos'])
+            document.getElementById("count_cart").innerText = data.data
+            document.getElementById("logo_text").textContent = data['infos']
+        })
+</script>
+
+</body>
+
+</html>

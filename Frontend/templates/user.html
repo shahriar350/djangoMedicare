@@ -1,0 +1,59 @@
+{% extends 'master.html' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-sm-6 col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>{{ user.name }}</h5>
+                        <p>{{ user.phone_number }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for cart in carts %}
+            <div class="row card my-3">
+                <h5 class="px-3 py-2 border-bottom">Cart: {{ forloop.counter }}</h5>
+                {% for get_cart_product in cart.get_cart_products.all %}
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <a href="{% url 'front:product' get_cart_product.product.id %}"><img
+                                src="{{ get_cart_product.product.image.url }}" width="100%" alt=""></a>
+                        <a href="{% url 'front:product' get_cart_product.product.id %}">
+                            <p>{{ get_cart_product.product.name }}</p></a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div class="my-3">
+            <div class="row card py-2">
+                <h5 class="px-3 py-2 border-bottom">Ambulances:</h5>
+                {% for ambulance in ambulances %}
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <img src="{{ ambulance.ambulance.image.url }}" alt="{{ ambulance.ambulance.name }}"
+                             width="100%">
+                        <h5>{{ ambulance.ambulance.name }}</h5>
+                    </div>
+                {% empty %}
+                    <p>No ambulance in order</p>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="my-3">
+            <div class="row card py-2">
+                <h5 class="px-3 py-2 border-bottom">Appointments:</h5>
+                <div class="row card-body">
+                {% for appointment in appointments %}
+                    <div class="col-md-3 col-6">
+                        <img src="{{ appointment.doctor.image.url }}" alt="{{ appointment.doctor.name.title }}" width="100%">
+                        <p class="p-0 m-0">{{ appointment.doctor.name.title }}</p>
+                        <p class="p-0 m-0">{{ appointment.time.ctime }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

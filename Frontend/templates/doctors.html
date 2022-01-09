@@ -1,0 +1,87 @@
+{% extends 'master.html' %}
+
+{% block body %}
+    <div class="row">
+    <div class="container">
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="col-12">
+                    <h4 class="border-bottom py-2 ">My Appointments</h4>
+                </div>
+                {% for appointment in appointments %}
+                    <div class="col-md-3 col-6">
+                        <img src="{{ appointment.doctor.image.url }}" alt="{{ appointment.doctor.name.title }}"
+                             width="100%">
+                        <p class="p-0 m-0">{{ appointment.doctor.name.title }}</p>
+                        <p class="p-0 m-0">{{ appointment.time }}</p>
+                        {#                        <p class="p-0 m-0">{{ appointment.time. }}</p>#}
+                        <form action="{% url 'front:remove_doctor_appointment' appointment.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-block"><span class="icon-delete text-danger"></span>
+                            </button>
+                        </form>
+                    </div>
+                {% empty %}
+                    <h5>Empty appointment.</h5>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class=" mt-4">
+            <h4 class="col-12 py-2">Doctors: </h4>
+            <div class="col-12">
+                <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Specialist</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ doctor.name.title }}</td>
+                        <td><img src="{{ doctor.image.url }}" alt="{{ doctor.name }}" height="120px"></td>
+                        <td>{{ doctor.specialist.name.title }}</td>
+                        <td>
+                            <form action="{% url 'front:doctor_appointment' doctor.id %}" method="post">
+                                <input required type="datetime-local" name="time" class="form-control">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link">Take Appointment</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            </div>
+
+
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+
+{% block head %}
+    <style>
+        .dataTables_wrapper {
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+{% endblock %}
+

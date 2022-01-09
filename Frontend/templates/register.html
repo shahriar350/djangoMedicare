@@ -1,0 +1,15 @@
+{% extends 'master.html' %}
+{% load crispy_forms_filters %}
+{% block body %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <button type="submit" class="btn btn-primary">Create user</button>
+                        <a href="{% url 'front:login' %}"  class="btn btn-link">Login</a>
+
+        </form>
+
+    </div>
+
+{% endblock %}

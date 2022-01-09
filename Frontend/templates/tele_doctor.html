@@ -1,0 +1,105 @@
+{% extends 'master.html' %}
+
+{% block body %}
+    <div class="container">
+        {% if request.resolver_match.url_name == 'tele_doctor_video' %}
+            <div>
+                <div class="webcam">
+                    <div class="video-outer border">
+                        <video id="video" height="100%" width="100%" autoplay></video>
+                    </div>
+
+                    <div class="webcam-start-stop">
+                        <a href="#!" class="btn-start" onclick="start()">Start</a>
+                        <a href="#!" class="btn-stop" onclick="StopWebCam()">Stop</a>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="mt-4">
+            <h4 class="col-12 pb-2">Doctors: </h4>
+        <div class="col-12 ">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Specialist</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ doctor.name.title }}</td>
+                        <td><img src="{{ doctor.image.url }}" alt="{{ doctor.name }}" height="120px"></td>
+                        <td>{{ doctor.specialist.name.title }}</td>
+                        <td>
+                            <a href="{% url 'front:tele_doctor_video' %}">Start video call</a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block head %}
+    <style>
+        .dataTables_wrapper {
+            width: 100%;
+        }
+
+    </style>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+        {% if request.resolver_match.url_name == 'tele_doctor_video' %}
+            var StopWebCam = function () {
+                var stream = video.srcObject;
+                var tracks = stream.getTracks();
+
+                for (var i = 0; i < tracks.length; i++) {
+                    var track = tracks[i];
+                    track.stop();
+                }
+                video.srcObject = null;
+            }
+
+            var start = function () {
+                var video = document.getElementById("video"),
+                    vendorURL = window.URL || window.webkitURL;
+
+                if (navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({video: true})
+                        .then(function (stream) {
+                            video.srcObject = stream;
+                        }).catch(function (error) {
+                        console.log("Something went wrong");
+                    });
+                }
+            }
+            $(function () {
+                start();
+            });
+        {% endif %}
+    </script>
+{% endblock %}
+

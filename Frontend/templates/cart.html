@@ -1,0 +1,133 @@
+{% extends 'master.html' %}
+
+{% block body %}
+    <div class="bg-light py-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 mb-0">
+                    <a href="index.html">Home</a> <span class="mx-2 mb-0">/</span>
+                    <strong class="text-black">Cart</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div class="site-blocks-table">
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th class="product-thumbnail">Image</th>
+                                <th class="product-name">Product</th>
+                                <th class="product-price">Price</th>
+                                <th class="product-quantity">Quantity</th>
+                                <th class="product-total">Total</th>
+                                <th class="product-remove">Remove</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for get_cart_product in cart.get_cart_products.all %}
+
+                                <tr>
+                                    <td class="product-thumbnail">
+                                        <img src="{{ get_cart_product.product.image.url }}" alt="Image"
+                                             class="img-fluid">
+                                    </td>
+                                    <td class="product-name">
+                                        <a href="{% url 'front:product' get_cart_product.product.id %}"><h2
+                                                class="h5 text-black">{{ get_cart_product.product.name }}</h2></a>
+                                    </td>
+                                    <td>${{ get_cart_product.product.price }}</td>
+                                    <td>
+                                        <div class="input-group mb-3" style="max-width: 120px;">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-primary js-btn-minus" type="button">
+                                                    &minus;
+                                                </button>
+                                            </div>
+                                            <input type="text" class="form-control text-center"
+                                                   value="{{ get_cart_product.quantity }}" placeholder=""
+                                                   aria-label="Example text with button addon"
+                                                   aria-describedby="button-addon1">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-primary js-btn-plus" type="button">
+                                                    &plus;
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    {#                                <td>${{ get_cart_product.product.price|add:get_cart_product.quantity }}</td>#}
+                                    <td>
+                                        ${% widthratio get_cart_product.product.price 1 get_cart_product.quantity %}</td>
+
+
+                                    <td>
+                                        <form action="{% url 'front:remove_cart_product' get_cart_product.id %}"
+                                              method="post">
+                                            {% csrf_token %}
+                                            <button type="submit"
+                                                    class="btn btn-primary height-auto btn-sm">X
+                                            </button>
+                                        </form>
+
+
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6">No data available</td>
+                                </tr>
+                            {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row  justify-content-end">
+                <div class="col-md-6 pl-5">
+                    <div class="row justify-content-end">
+                        <div class="col-md-7">
+
+
+                            {% if cart.get_cart_products.count > 0 %}
+                                <div class="row">
+                                    <div class="col-md-12 text-right border-bottom mb-5">
+                                        <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                                    </div>
+                                </div>
+                                <div class="row mb-5">
+                                    <div class="col-md-6">
+                                        <span class="text-black">Total</span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <strong class="text-black">${{ total_price.total_price }}</strong>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <form action="{% url 'front:cart_to_checkout' %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block"
+                                                >Proceed To
+                                            Checkout
+                                        </button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
