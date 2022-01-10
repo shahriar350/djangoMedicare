@@ -9,6 +9,15 @@
                         <h5>{{ user.first_name }} {{ user.last_name }}</h5>
                         <p>{{ user.username }}</p>
                         <p>{{ user.email }}</p>
+                        {% if user.is_staff %}
+                            <p>Staff</p>
+                        {% else %}
+                            {% if user.is_superuser %}
+                                <p>Admin</p>
+                            {% else %}
+                                <p>User</p>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -45,14 +54,15 @@
             <div class="row card py-2">
                 <h5 class="px-3 py-2 border-bottom">Appointments:</h5>
                 <div class="row card-body">
-                {% for appointment in appointments %}
-                    <div class="col-md-3 col-6">
-                        <img src="{{ appointment.doctor.image.url }}" alt="{{ appointment.doctor.name.title }}" width="100%">
-                        <p class="p-0 m-0">{{ appointment.doctor.name.title }}</p>
-                        <p class="p-0 m-0">{{ appointment.time.ctime }}</p>
-                    </div>
-                {% endfor %}
-            </div>
+                    {% for appointment in appointments %}
+                        <div class="col-md-3 col-6">
+                            <img src="{{ appointment.doctor.image.url }}" alt="{{ appointment.doctor.name.title }}"
+                                 width="100%">
+                            <p class="p-0 m-0">{{ appointment.doctor.name.title }}</p>
+                            <p class="p-0 m-0">{{ appointment.time.ctime }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
 
